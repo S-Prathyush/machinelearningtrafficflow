@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Feedback</title>
+</head>
+<body>
+    <h1>User Feedback</h1>
+    <form id="feedbackForm">
+        <label for="feedback">Enter your feedback:</label><br>
+        <input type="text" id="feedback" name="feedback"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('feedback').value;
+
+            fetch('/submit-feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feedback })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
